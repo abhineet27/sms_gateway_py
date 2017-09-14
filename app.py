@@ -27,7 +27,7 @@ def inbound_sms():
     if not request.json:
         abort(400)
     response = message_validator.validate_message(request)
-    if(len(response.get_error()) > 0):
+    if(response is not None and len(response.get_error()) > 0):
         return make_response(jsonify(response.__dict__),400)
     return jsonify({'tasks': tasks})
 
