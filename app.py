@@ -5,6 +5,8 @@ from auth import auth
 from Response import Response
 import base64
 import message_validator
+import re
+import app_redis
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -14,12 +16,13 @@ login_manager = LoginManager()
 @login_manager.request_loader
 def inbound_sms():
     username = get_username_from_request(request)
-    print(username)
     if not request.json:
         abort(400)
     response = message_validator.validate_message(request,username,True)
-    if(response is not None and len(response.get_error()) > 0):
+    if response is not None and len(response.get_error()) > 0:
         return make_response(jsonify(response.__dict__),400)
+    if p.search(request.json['text']):
+        app_redis.set(request.json['from']+request.json['to'],"STOP", 4*60*60)
     response = Response("inbound sms ok","")
     return make_response(jsonify(response.__dict__),200)
 
@@ -30,6 +33,8 @@ def get_username_from_request(request):
         api_key = base64.b64decode(api_key)
         username = api_key.split(':')[0]
         return username
+
+p = re.compile(r'\bSTOP\b')
 
 if __name__ == '__main__':
     app.run(debug=True)
