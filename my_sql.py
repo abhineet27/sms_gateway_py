@@ -9,3 +9,9 @@ class Account(peewee.Model):
 
     class Meta:
         database = db
+class Phone_Number(peewee.Model):
+    number = peewee.TextField()
+    account_id = peewee.IntegerField()
+
+    class Meta:
+        database = db

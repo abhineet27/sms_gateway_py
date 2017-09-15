@@ -6,9 +6,11 @@ auth = HTTPBasicAuth()
 
 @auth.get_password
 def get_password(user_name):
-    for account in Account.filter(username=user_name):
+    try:
+        account = Account.get(Account.username == user_name)
         return account.auth_id
-    return None
+    except:
+        return None
 
 @auth.error_handler
 def unauthorized():
