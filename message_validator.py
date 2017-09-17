@@ -2,7 +2,7 @@ from Response import Response
 from my_sql import Phone_Number
 from my_sql import Account
 
-def validate_message(request,username,is_inbound):
+def validate_message(request, username, is_inbound):
     if not 'from' in request.json:
         response =  Response('','from is missing')
         return response
