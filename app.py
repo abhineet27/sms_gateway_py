@@ -69,4 +69,4 @@ def get_username_from_request(request):
 p = re.compile(r'\bSTOP\b')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
