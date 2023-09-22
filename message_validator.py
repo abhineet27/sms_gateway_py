@@ -18,7 +18,7 @@ def validate_message(request, username, is_inbound):
     if not 'text' in request.json:
         response =  Response('','text is missing')
         return response
-    if len(request.json['text']) < 1 or len(request.json['text']) > 120:
+    if len(request.json['text']) < 1 or len(request.json['text']) > 150:
         response =  Response('','text is invalid')
         return response
     if is_inbound:
